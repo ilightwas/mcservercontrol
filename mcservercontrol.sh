@@ -10,13 +10,13 @@
 cmdline="java -Xmx1024M -Xms1024M -jar server.jar nogui"
 
 # in hours, after starting
-restart_interval=1
+restart_interval=6
 
 # keep console colored output
 keep_output_color=1
 
 # offset the next restart (server load time), in seconds
-map_load_wait_offset=1
+map_load_wait_offset=120
 
 fifo=".serverin"
 pidfile=".serverpid"
