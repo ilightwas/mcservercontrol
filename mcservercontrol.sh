@@ -36,17 +36,17 @@ should_quit() {
 }
 
 is_server_running() {
-    ps -p $(cat "$pidfile") >/dev/null 2>&1
+    /bin/ps -p "$(cat "$pidfile")" >/dev/null 2>&1
     return "$?"
 }
 
 cleanup_sleep() {
-    sleep_pid=$(ps | grep sleep | awk "{ print \$1 }")
+    sleep_pid=$(/bin/ps | grep sleep | awk "{ print \$1 }")
     [ -n "$sleep_pid" ] && kill "$sleep_pid"
 }
 
 try_send_cmd() {
-    if ps -p "$1" >/dev/null 2>&1; then
+    if /bin/ps -p "$1" >/dev/null 2>&1; then
         echo "$2" >"$fifo"
         sleep "$3"
     else
@@ -104,7 +104,7 @@ start_server() {
 manage_server() {
     while :; do
         serverpid=$(cat "$pidfile")
-        if ! ps -p "$serverpid" >/dev/null 2>&1; then
+        if ! /bin/ps -p "$serverpid" >/dev/null 2>&1; then
             echo "Starting server.."
             start_server
         else
