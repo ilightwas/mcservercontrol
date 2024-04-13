@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # A simple minecraft server restart script
 # with server input and control
@@ -22,7 +22,7 @@ fifo=".serverin"
 pidfile=".serverpid"
 run_file=".run"
 serverpid=0
-empty_line=$(echo -e "\n")
+empty_line=$(printf "\n")
 
 rm_files() {
     echo "Removing control files.."
@@ -32,7 +32,7 @@ rm_files() {
 }
 
 should_quit() {
-    return $(cat "$run_file")
+    return "$(cat "$run_file")"
 }
 
 is_server_running() {
