@@ -22,7 +22,6 @@ map_load_wait_offset=120
 fifo="$(mktemp --suffix=.serverin)"
 pidfile="$(mktemp --suffix=.serverpid)"
 run_file="$(mktemp --suffix=.run)"
-serverpid=0
 empty_line=$(printf "\n")
 
 rm_files() {
@@ -104,8 +103,7 @@ start_server() {
 
 manage_server() {
     while :; do
-        serverpid=$(cat "$pidfile")
-        if ! /bin/ps -p "$serverpid" >/dev/null 2>&1; then
+        if ! /bin/ps -p "$(cat "$pidfile")" >/dev/null 2>&1; then
             echo "Starting server.."
             start_server
         else
