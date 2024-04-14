@@ -144,6 +144,10 @@ while IFS= read -r line; do
         echo "Quitting.."
         echo "stop" >"$fifo"
         echo 0 >"$run_file"
+
+        # avoid hanging on some sleep
+        cleanup_sleep
+
         break
     else
         if [ "$line" = "$empty_line" ]; then
