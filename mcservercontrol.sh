@@ -18,9 +18,10 @@ keep_output_color=1
 # offset the next restart (server load time), in seconds
 map_load_wait_offset=120
 
-fifo=".serverin"
-pidfile=".serverpid"
-run_file=".run"
+# mktemp is not posix
+fifo="$(mktemp --suffix=.serverin)"
+pidfile="$(mktemp --suffix=.serverpid)"
+run_file="$(mktemp --suffix=.run)"
 serverpid=0
 empty_line=$(printf "\n")
 
