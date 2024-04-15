@@ -42,6 +42,7 @@ is_server_running() {
 
 cleanup_sleep() {
     sleep_pid=$(/bin/ps | grep sleep | awk "{ print \$1 }")
+    # shellcheck disable=SC2086
     [ -n "$sleep_pid" ] && kill $sleep_pid
 }
 
