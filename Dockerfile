@@ -1,4 +1,16 @@
-FROM amazoncorretto:17-alpine3.18-jdk as buildjre
+# used to select which java version in the build cmd
+# --build-arg java=??
+ARG java=17
+ARG jre_version=buildjre${java}
+
+
+FROM amazoncorretto:8-alpine3.18-jdk as buildjre8
+
+# java 8 doesn't have the jlink tool
+RUN mkdir customjre && cp -a ${JAVA_HOME}/* /customjre
+
+
+FROM amazoncorretto:11-alpine3.18-jdk as buildjre11
 
 # jlink --strip-debug needs objcopy
 RUN apk add --no-cache binutils 
@@ -11,6 +23,25 @@ RUN $JAVA_HOME/bin/jlink \
     --compress=0 \
     --add-modules ALL-MODULE-PATH \
     --output /customjre
+
+
+FROM amazoncorretto:17-alpine3.18-jdk as buildjre17
+
+# jlink --strip-debug needs objcopy
+RUN apk add --no-cache binutils 
+
+# build a custom slim jre, optimized
+RUN $JAVA_HOME/bin/jlink \
+    --strip-debug \
+    --no-man-pages \
+    --no-header-files \
+    --compress=0 \
+    --add-modules ALL-MODULE-PATH \
+    --output /customjre
+
+
+# alias the selected jre build stage
+FROM ${jre_version} as buildjre
 
 
 FROM alpine:3.18
